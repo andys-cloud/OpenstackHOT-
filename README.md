@@ -1,2 +1,2 @@
-# OpenstackHOT-
-this is a openstack heat hot, it includes create tenants and init virtual network,router,floatingIP,subnet.
+# Openstack learning files
+this is a openstack notebook, it includes tenants, network,router,floatingIP,subnet and so on.
