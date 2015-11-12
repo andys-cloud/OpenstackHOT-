@@ -1,0 +1,24 @@
+# tenant config
+tenant_name="heat-test-test"
+tenant_description="xx"
+tenant_enabled=True
+
+# user config
+user_name="heat-test-test"
+user_pass="password123"
+user_email="heat-test-test@lenovo.com"
+user_enabled=True
+
+# appending user info, heat server init heat template by the user
+append_user_name="heat-test"
+append_user_pass="password123"
+append_user_role="Member"
+
+#heat params
+heat_template_name="router-network-createxx.yaml"
+external_network_name="public_intranet"
+
+#keystone config
+os_auth_url="http://192.168.0.2:5000/v2.0/"
+
+
