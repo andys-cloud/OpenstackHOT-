@@ -15,7 +15,7 @@ append_user_pass="password123"
 append_user_role="Member"
 
 #heat params
-heat_template_name="router-network-createxx.yaml"
+heat_template_name="router-network-create.yaml"
 external_network_name="public_intranet"
 
 #keystone config
