@@ -1,0 +1,45 @@
+heat_template_version: 2013-05-23
+description: >
+  HOT Templete to add a virtual network connect to public network by virtual router. the command like this
+  heat stack-create -f ""  -P public_net_id="4938b314-ecc9-4d6f-9eb4-64a964bb7682"  defult-net-add
+
+parameters:
+  public_net_id:
+    type: string
+    description: public network id 
+    
+resources:
+  private_net:
+    type: OS::Neutron::Net
+    properties:
+      name: default-net1
+ 
+  private_subnet:
+    type: OS::Neutron::Subnet
+    depends_on: private_net
+    properties:
+      network_id: { get_resource: private_net }
+      name: default-subnet
+      cidr: 192.168.1.0/24
+      gateway_ip: 192.168.1.1
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: { get_param: public_net_id}
+ 
+  router1:
+    type: OS::Neutron::Router
+    properties:
+      name: default_router
+      external_gateway_info:
+          network: { get_param : public_net_id }
+ 
+  subnet_interface:
+    type: OS::Neutron::RouterInterface
+    depends_on: [ router1,private_net,private_subnet ]
+    properties:
+      router_id: { get_resource : router1 }
+      subnet_id: { get_resource : private_subnet }     
+
+
