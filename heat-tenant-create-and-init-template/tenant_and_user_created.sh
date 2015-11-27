@@ -177,7 +177,8 @@ heat_stack_create_exec(){
   fi
   echo "/usr/bin/heat stack-create -f $template_file -P $params $stack_name"
   sleep 2
-  /usr/bin/heat stack-create -f $template_file -P $params $stack_name
+  #/usr/bin/heat stack-create -f $template_file -P $params $stack_name
+  nohup  /usr/bin/heat stack-create -f $template_file -P $params $stack_name > /dev/null 2>&1 &
   return $?
 }
 
