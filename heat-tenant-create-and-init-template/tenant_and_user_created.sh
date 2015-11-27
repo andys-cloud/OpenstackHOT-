@@ -192,6 +192,46 @@ query_net_id_by_external_name(){
   echo "$external_network_id"
 }
 
+# build openrc file ,params : tenant_name user_name passwd
+build_openrc_file(){
+    os_tenant_name=$1
+    os_user_name=$2
+    os_passwd=$3
+    openrc_str="
+    #!/bin/sh
+    \nexport OS_NO_CACHE='true'
+    \nexport OS_TENANT_NAME='$os_tenant_name'
+    \nexport OS_USERNAME='$os_user_name'
+    \nexport OS_PASSWORD='$os_passwd'
+    \nexport OS_AUTH_URL='http://192.168.0.2:5000/v2.0/'
+    \nexport OS_AUTH_STRATEGY='keystone'
+    \nexport OS_REGION_NAME='RegionOne'
+    \nexport CINDER_ENDPOINT_TYPE='publicURL'
+    \nexport GLANCE_ENDPOINT_TYPE='publicURL'
+    \nexport KEYSTONE_ENDPOINT_TYPE='publicURL'
+    \nexport NOVA_ENDPOINT_TYPE='publicURL'
+    \nexport NEUTRON_ENDPOINT_TYPE='publicURL'
+    "
+    echo $openrc_str 
+}
+
+# write a str to file, params: str and filedir
+write_str_to_file(){
+   str=$1
+   file_str=$2
+   if [ -e "$file_str" ]; then
+       echo "the file: $file_str exist. remove it."
+       rm -rf $file_str
+       /bin/touch $file_str
+   else
+       echo "the file: $file_str is not exits. create it."
+       /bin/touch $file_str
+   fi
+   echo -e "$str" > $file_str
+ 
+}
+
+
 #get_tenant_info and user info
 current_dir=$(cd `dirname $0`;pwd)
 tenant_config_fileName="tenant_create_config.txt"
@@ -252,6 +292,9 @@ if [ -e $current_dir/$heat_openrc_unsetfile_name -a -e $current_dir/$heat_openrc
        export OS_TENANT_NAME=$tenant_name
        export OS_USERNAME=$append_user_name
        export OS_PASSWORD=$append_user_pass
+	   openrc_str=$(build_openrc_file $tenant_name $append_user_name $append_user_pass)
+       openrc_file="openrc_$tenant_name"
+       write_str_to_file "$openrc_str" $current_dir/$openrc_file
 #	   if [ x$os_auth_url != "x" ];then
 #           export OS_AUTH_URL=$os_auth_url
 #       fi
