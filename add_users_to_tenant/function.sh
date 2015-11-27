@@ -77,6 +77,10 @@ query_tenent_id_by_name(){
   echo "query tenant id ,the tenant name is: $1"
   echo
   tenant_id=`$keystoneclient tenant-list | grep "$1" | awk -F '|' '{print $2}' | awk 'gsub(/^ *| *$/,"")'`
+  if [ x$tenant_id == x"" ];then
+     echo "Can't find the tenant: $1"
+     exit 1
+  fi
   echo "tenant_name: $1; tenant_id: $echo_c"
   echo "$tenant_id"
 }
@@ -86,6 +90,10 @@ query_user_id_by_name(){
   echo "query user id ,the user name is: $1"
   echo
   user_id=`$keystoneclient user-list | grep "$1" | awk -F '|' '{print $2}' | awk 'gsub(/^ *| *$/,"")'`
+  if [ x$user_id == x"" ];then
+     echo "Can't find the user: $1"
+     exit 1
+  fi
   echo "user_name: $1; user_id: $echo_c"
   echo "$user_id"
 }
@@ -95,6 +103,10 @@ query_role_id_by_name(){
   echo "query role id ,the role name is: $1"
   echo
   role_id=`$keystoneclient role-list | grep "$1" | awk -F '|' '{print $2}' | awk 'gsub(/^ *| *$/,"")'`
+  if [ x$role_id == x"" ];then
+     echo "Can't find the role: $1"
+     exit 1
+  fi
   echo "role_name: $1; role_id: $echo_c"
   echo "$role_id"
 }
