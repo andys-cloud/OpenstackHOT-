@@ -283,6 +283,23 @@ if [ $? -ne 0 ];then
 fi
 #create_user_by_keystone "$tenant_id"
 
+# modify tenant quotas
+quota_mgm_file="quota-management.py"
+if [ -e $current_dir/$quota_mgm_file ];then
+       if [ x$tenant_id == "x" ];then
+           echo "modify quota error,tenant id is null."
+           exit 1
+       fi
+       /usr/bin/python $current_dir/$quota_mgm_file --project-id $tenant_id
+       if [ $? -ne 0 ];then
+           echo "Sorry, Get external network id error."
+           exit 1
+       fi
+    else
+       echo "modify quota failed.the file $current_dir/$quota_mgm_file is not exits."
+       exit 1
+fi
+
 # unset heat exec context
 heat_openrc_unsetfile_name="heat-openrc-unset"
 heat_openrc_setfile_name="heat-openrc"
